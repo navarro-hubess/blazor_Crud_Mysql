@@ -1,6 +1,7 @@
 @page  "/User/ListUsuario"
 @using System.Net.Http
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 
 <h3>Usuários</h3>
 
@@ -21,7 +22,7 @@
                 <td>@item.FirstName</td>
                 <td>@item.LastName</td>
                 <td>
-                    <button class="btn btn-success" @onclick="@(() => EditUser(item.Id))">Edit</button>
+                    <a href="/User/EditUsuario/@item.Id.ToString()" ><button class="btn btn-success">Editar</button></a>
                     <button class="btn btn-danger" @onclick="@(() => DeleteUser(item.Id))">Delete</button>
                 </td>
             </tr>
@@ -44,14 +45,11 @@
         }
     }
 
-    private void EditUser(int itemId)
+    private async Task DeleteUser(int itemId)
     {
         //call controller
-    }
-
-    private void DeleteUser(int itemId)
-    {
-        //call controller
+        await Http.DeleteAsync("/User/Delete/"+itemId);
+        NavigationManager.NavigateTo("User/ListUsuario", true);
     }
 
 }

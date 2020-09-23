@@ -4,13 +4,14 @@ using blazor_mysql2.Shared;
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 [ApiController]
 [Route("[controller]")]
 public class UserController : Controller
 {
     private readonly AppDbContext db;
-    
+
     public UserController(AppDbContext db)
     {
         this.db = db;
@@ -22,6 +23,14 @@ public class UserController : Controller
     {
         var users = await db.Users.ToListAsync();
         return Ok(users);
+    }
+
+    [HttpGet]
+    [Route("GetById")]
+    public async Task<IActionResult> Get([FromQuery] string id)
+    {
+        var user = await db.Users.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
+        return Ok(user);
     }
 
     [HttpPost]
@@ -44,41 +53,57 @@ public class UserController : Controller
             };
 
             db.Add(newUser);
-            await db.SaveChangesAsync();
+            await db.SaveChangesAsync();//INSERT INTO
             return Ok();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return View(e);
         }
     }
 
-    [HttpGet]
-    [Route("Teste")]
-    public async Task<ActionResult> PostTeste()
+    [HttpPut]
+    [Route("Update")]
+    public async Task<IActionResult> Put([FromBody] User user)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        db.Entry(user).State = EntityState.Modified;
         try
         {
-            var user2 = new User();
-            user2.Title = "Sr";
-            user2.FirstName = "Asdrubal";
-            user2.MiddleName = "A";
-            user2.LastName = "Iohanson";
-            user2.DateOfBirth = DateTime.Today;
-            user2.Email = "teste1@mail.com";
-            user2.Password = "123456";
-            user2.ConfirmPassword = "123456";
-            user2.AcceptTerms = true;
-
-            db.Add(user2);
             await db.SaveChangesAsync();
-            return Ok(await db.Users.ToListAsync());
         }
-        catch
+        catch (DbUpdateConcurrencyException ex)
         {
-            return null;
+            throw (ex);
         }
+        return NoContent();
     }
 
+    [HttpDelete]
+    [Route("Delete/{id}")]
+    public async Task<ActionResult<User>> Delete(int id)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        var user = await db.Users.FindAsync(id);
+        if (user == null)
+        {
+            return NotFound();
+        }
+        db.Users.Remove(user);
+        await db.SaveChangesAsync();
+        return user;
+    }
+
+    private bool UserExists(int id)
+    {
+        return db.Users.Any(e => e.Id == id);
+    }
 
 }

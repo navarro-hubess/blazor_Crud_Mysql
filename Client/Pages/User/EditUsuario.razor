@@ -1,0 +1,106 @@
+@page  "/User/EditUsuario"
+@page "/User/EditUsuario/{Item}"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Atualizar Usuário</h4>
+    <div class="card-body">
+        <EditForm Model="@user" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Título</label>
+                    <InputSelect @bind-Value="user.Title" class="form-control">
+                        <option value=""></option>
+                        <option value="Sr">Sr</option>
+                        <option value="Sra">Sra</option>
+                    </InputSelect>
+                    <ValidationMessage For="@(() => user.Title)" />
+                </div>
+                <div class="form-group col-5">
+                    <label>First Name</label>
+                    <InputText @bind-Value="user.FirstName" class="form-control" />
+                    <ValidationMessage For="@(() => user.FirstName)" />
+                </div>
+                <div class="form-group col-5">
+                    <label>Middle Name</label>
+                    <InputText @bind-Value="user.MiddleName" class="form-control" />
+                    <ValidationMessage For="@(() => user.MiddleName)" />
+                </div>
+                <div class="form-group col-5">
+                    <label>Last Name</label>
+                    <InputText @bind-Value="user.LastName" class="form-control" />
+                    <ValidationMessage For="@(() => user.LastName)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Date of Birth</label>
+                    <InputDate @bind-Value="user.DateOfBirth" class="form-control" />
+                    <ValidationMessage For="@(() => user.DateOfBirth)" />
+                </div>
+                <div class="form-group col">
+                    <label>Email</label>
+                    <InputText @bind-Value="user.Email" class="form-control" />
+                    <ValidationMessage For="@(() => user.Email)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Password</label>
+                    <InputText @bind-Value="user.Password" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => user.Password)" />
+                </div>
+                <div class="form-group col">
+                    <label>Confirm Password</label>
+                    <InputText @bind-Value="user.ConfirmPassword" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => user.ConfirmPassword)" />
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <InputCheckbox @bind-Value="user.AcceptTerms" id="acceptTerms" class="form-check-input" />
+                <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
+                <ValidationMessage For="@(() => user.AcceptTerms)" />
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+
+    private User user = new User();
+    private EditContext editContext { get; set; }
+
+    [Parameter]
+    public string Item { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var itemId = Item;
+        user = await Http.GetFromJsonAsync<User>($"/User/GetById?id={itemId}");
+        editContext = new EditContext(user);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        //Enviar dados para o Controller no Backend
+        var teste = await Http.PutAsJsonAsync("/User/Update", user);
+        NavigationManager.NavigateTo("user/ListUsuario");
+    }
+
+    private void HandleReset()
+    {
+        user = new User();
+        editContext = new EditContext(user);
+    }
+
+    
+
+}
+
