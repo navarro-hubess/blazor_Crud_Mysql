@@ -9,5 +9,6 @@ namespace blazor_mysql2.Server
         {
         }
         public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }

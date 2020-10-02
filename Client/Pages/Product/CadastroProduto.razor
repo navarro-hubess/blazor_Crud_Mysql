@@ -1,0 +1,60 @@
+@page  "/Product/CadastroProduct"
+@using System.Net.Http
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<div class="card m-3">
+    <h4 class="card-header">Cadastro do Produto</h4>
+    <div class="card-body">
+        <EditForm Model="@product" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
+            <DataAnnotationsValidator />
+           
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Nome</label>
+                    <InputText @bind-Value="product.Nome" class="form-control" />
+                    <ValidationMessage For="@(() => product.Nome)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Preço</label>
+                    <InputNumber @bind-Value="product.Preco" @bind-Value:format="F2" class="form-control" />
+                    <ValidationMessage For="@(() => product.Preco)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Descrição</label>
+                    <InputText @bind-Value="product.Descricao" class="form-control" />
+                    <ValidationMessage For="@(() => product.Descricao)" />
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
+                <button type="reset" class="btn btn-secondary">Cancel</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Product product = new Product();
+    private EditContext editContext { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        var teste = await Http.PostAsJsonAsync("/Product/Create", product);
+        NavigationManager.NavigateTo("Product/ListProduct");
+
+    }
+
+    private void HandleReset()
+    {
+        product = new Product();
+        editContext = new EditContext(product);
+    }
+
+    
+
+}
