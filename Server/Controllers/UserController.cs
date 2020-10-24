@@ -98,7 +98,7 @@ public class UserController : Controller
         }
         db.Users.Remove(user);
         await db.SaveChangesAsync();
-        return user;
+        return NoContent();
     }
 
     private bool UserExists(int id)

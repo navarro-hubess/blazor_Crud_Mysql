@@ -29,21 +29,23 @@ public class ProductController : Controller
     [Route("GetById")]
     public async Task<IActionResult> Get([FromQuery] string id)
     {
-        var product = await db.Products.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
+        var product = await db.Products.SingleOrDefaultAsync(x => x.ProductId == Convert.ToInt32(id));
         return Ok(product);
     }
 
     [HttpPost]
     [Route("Create")]
-    public async Task<ActionResult> Post([FromBody] Product product)
+    public async Task<ActionResult> Post([FromBody] ProductDto product)
     {
         try
         {
+            //var categoria = db.Categories.FirstOrDefault(x => x.Id == Convert.ToInt32(product.CategoriaId));
             var newProduct = new Product
             {
                 Nome = product.Nome,
                 Descricao = product.Descricao,
-                Preco = product.Preco
+                Preco = product.Preco,
+                CategoriaId = Convert.ToInt32(product.CategoriaId)
             };
 
             db.Add(newProduct);

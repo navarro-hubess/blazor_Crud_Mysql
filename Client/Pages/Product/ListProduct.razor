@@ -24,8 +24,8 @@
                 <td>@String.Format("{0, 0:C2}", @item.Preco)</td>
                 <td>@item.Descricao</td>
                 <td>
-                    <a href="/Product/EditProduct/@item.Id.ToString()" ><button class="btn btn-success">Editar</button></a>
-                    <button class="btn btn-danger" @onclick="@(() => DeleteProduct(item.Id))">Delete</button>
+                    <a href="/Product/EditProduct/@item.ProductId.ToString()" ><button class="btn btn-success">Editar</button></a>
+                    <button class="btn btn-danger" @onclick="@(() => DeleteProduct(item.ProductId))">Delete</button>
                 </td>
             </tr>
             }   

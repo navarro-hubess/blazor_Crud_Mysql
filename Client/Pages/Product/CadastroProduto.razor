@@ -1,4 +1,4 @@
-@page  "/Product/CadastroProduct"
+@page "/Product/CadastroProduct"
 @using System.Net.Http
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
@@ -8,7 +8,7 @@
     <div class="card-body">
         <EditForm Model="@product" OnValidSubmit="HandleValidSubmit" @onreset="HandleReset">
             <DataAnnotationsValidator />
-           
+
             <div class="form-row">
                 <div class="form-group col">
                     <label>Nome</label>
@@ -30,17 +30,50 @@
                     <ValidationMessage For="@(() => product.Descricao)" />
                 </div>
             </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary mr-1">Salvar</button>
-                <button type="reset" class="btn btn-secondary">Cancel</button>
-            </div>
-        </EditForm>
-    </div>
-</div>
+            <div class="form-row">
+                @* <div class="form-group col">
+                    <label>Categorias</label>
+                    <div class="form-group row"> *@
+                @* <select id="group" @bind="@product.CategoriaId">
+                    @foreach (var categoria in categoriasList)
+                    {
+                    <option value="@categoria.CategoriaId">@categoria.Name</option>
+                    }
+                    </select>
+                    </div> *@
 
-@code {
-    private Product product = new Product();
+                <InputSelect @bind-Value="product.CategoriaId">
+                    <option value="">Select</option>
+                    @foreach (var categoria in categoriasList)
+                            {
+                                <option value="@categoria.CategoriaId">@categoria.Name</option>
+                            }
+                        </InputSelect>
+            </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="reset" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+
+        @code {
+    private ProductDto product = new ProductDto();
     private EditContext editContext { get; set; }
+    private List<Categoria> categoriasList = new List<Categoria>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var categorias = await Http.GetFromJsonAsync<List<Categoria>>("/Categoria/List");
+        foreach (var item in categorias)
+        {
+            categoriasList.Add(item);
+        }
+    }
+
+
 
     private async Task HandleValidSubmit()
     {
@@ -51,10 +84,10 @@
 
     private void HandleReset()
     {
-        product = new Product();
+        product = new ProductDto();
         editContext = new EditContext(product);
     }
 
-    
+
 
 }
