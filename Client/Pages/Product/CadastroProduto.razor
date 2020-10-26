@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        @code {
+    @code {
     private ProductDto product = new ProductDto();
     private EditContext editContext { get; set; }
     private List<Categoria> categoriasList = new List<Categoria>();
@@ -73,13 +73,10 @@
         }
     }
 
-
-
     private async Task HandleValidSubmit()
     {
         var teste = await Http.PostAsJsonAsync("/Product/Create", product);
         NavigationManager.NavigateTo("Product/ListProduct");
-
     }
 
     private void HandleReset()
@@ -87,7 +84,5 @@
         product = new ProductDto();
         editContext = new EditContext(product);
     }
-
-
 
 }
