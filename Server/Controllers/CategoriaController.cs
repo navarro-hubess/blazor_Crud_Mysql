@@ -14,7 +14,7 @@ public class CategoriaController : Controller
 
     public CategoriaController(AppDbContext db)
     {
-        this.db = db;
+        this.db = db; //Injeção de Dependência!!!
     }
 
     [HttpGet]

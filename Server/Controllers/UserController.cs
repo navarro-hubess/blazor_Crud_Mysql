@@ -29,16 +29,21 @@ public class UserController : Controller
     [Route("GetById")]
     public async Task<IActionResult> Get([FromQuery] string id)
     {
-        var user = await db.Users.SingleOrDefaultAsync(x => x.Id == Convert.ToInt32(id));
+        var user = await db.Users.SingleOrDefaultAsync(x => x.UserId == Convert.ToInt32(id));
         return Ok(user);
     }
 
     [HttpPost]
     [Route("Create")]
-    public async Task<ActionResult> Post([FromBody] User user)
+    public async Task<ActionResult> Post([FromBody] UserDto user)
     {
         try
         {
+            var userDetails = new UserDetails{
+                Endereco = user.Endereco,
+                Telefone = user.Telefone
+            };
+
             var newUser = new User
             {
                 Title = user.Title,
@@ -49,7 +54,8 @@ public class UserController : Controller
                 Email = user.Email,
                 Password = user.Password,
                 ConfirmPassword = user.ConfirmPassword,
-                AcceptTerms = user.AcceptTerms
+                AcceptTerms = user.AcceptTerms,
+                UserDetails = userDetails
             };
 
             db.Add(newUser);
@@ -103,7 +109,7 @@ public class UserController : Controller
 
     private bool UserExists(int id)
     {
-        return db.Users.Any(e => e.Id == id);
+        return db.Users.Any(e => e.UserId == id);
     }
 
 }

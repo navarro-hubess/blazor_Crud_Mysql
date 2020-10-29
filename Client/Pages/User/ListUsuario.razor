@@ -22,8 +22,8 @@
                 <td>@item.FirstName</td>
                 <td>@item.LastName</td>
                 <td>
-                    <a href="/User/EditUsuario/@item.Id.ToString()" ><button class="btn btn-success">Editar</button></a>
-                    <button class="btn btn-danger" @onclick="@(() => DeleteUser(item.Id))">Delete</button>
+                    <a href="/User/EditUsuario/@item.UserId.ToString()" ><button class="btn btn-success">Editar</button></a>
+                    <button class="btn btn-danger" @onclick="@(() => DeleteUser(item.UserId))">Delete</button>
                 </td>
             </tr>
             }   

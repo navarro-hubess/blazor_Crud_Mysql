@@ -43,12 +43,12 @@
                     </div> *@
 
                 <InputSelect @bind-Value="product.CategoriaId">
-                    <option value="">Select</option>
+                    <option value="">Selecione a Categoria</option>
                     @foreach (var categoria in categoriasList)
                             {
                                 <option value="@categoria.CategoriaId">@categoria.Name</option>
                             }
-                        </InputSelect>
+                </InputSelect>
             </div>
 
                     <div class="text-center">

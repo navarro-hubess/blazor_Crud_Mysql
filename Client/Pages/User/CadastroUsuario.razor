@@ -58,6 +58,18 @@
                     <ValidationMessage For="@(() => user.ConfirmPassword)" />
                 </div>
             </div>
+
+            <div class="form-row">
+                <div class="form-group col">
+                    <label>Endereço</label>
+                    <InputText @bind-Value="user.Endereco" class="form-control" />
+                </div>
+                <div class="form-group col">
+                    <label>Telefone</label>
+                    <InputText @bind-Value="user.Telefone" class="form-control" />
+                </div>
+            </div>
+
             <div class="form-group form-check">
                 <InputCheckbox @bind-Value="user.AcceptTerms" id="acceptTerms" class="form-check-input" />
                 <label for="acceptTerms" class="form-check-label">Accept Terms & Conditions</label>
@@ -73,7 +85,7 @@
 
 @code {
 
-    private User user = new User();
+    private UserDto user = new UserDto();
     private EditContext editContext { get; set; }
 
     private async Task HandleValidSubmit()
@@ -86,7 +98,7 @@
 
     private void HandleReset()
     {
-        user = new User();
+        user = new UserDto();
         editContext = new EditContext(user);
     }
 

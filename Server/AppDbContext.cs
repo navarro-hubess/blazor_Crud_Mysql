@@ -14,6 +14,8 @@ namespace blazor_mysql2.Server
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<DetalhePedido> DetalhePedido { get; set; }
 
+        public DbSet<UserDetails> UserDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<DetalhePedido>()

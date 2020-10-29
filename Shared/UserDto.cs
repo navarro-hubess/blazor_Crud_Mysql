@@ -6,7 +6,7 @@ using System.Text;
 
 namespace blazor_mysql2.Shared
 {
-    public class User
+    public class UserDto
     {
         public int UserId { get; set; }
         [Required]
@@ -40,6 +40,7 @@ namespace blazor_mysql2.Shared
         [Range(typeof(bool), "true", "true", ErrorMessage = "Aceitar os termos é obrigatório")]
         public bool AcceptTerms { get; set; }
 
-        public UserDetails UserDetails { get; set; }
+        public string Endereco { get; set; }
+        public string Telefone { get; set; }
     }
 }

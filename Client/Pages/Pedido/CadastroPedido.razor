@@ -20,10 +20,10 @@
                             {
                                 <option value="@categoria.CategoriaId">@categoria.Name</option>
                             }
-                        </InputSelect>
-                    </div>
+                </InputSelect>
+            </div>
 
-                    <div class="form-row">
+            <div class="form-row">
                         <label>Produtos</label>
                         <InputSelect @bind-Value="pedidoDto.ProdutoId">
                             <option value="">Selecione o Produto</option>
@@ -32,15 +32,15 @@
                                 <option value="@produto.ProductId">@produto.Nome</option>
                             }
                         </InputSelect>
-                    </div>
-                    <div class="form-row">
+            </div>
+            <div class="form-row">
                         <label>Quantidade</label>
                         <InputNumber @bind-Value="pedidoDto.Quantidade" class="form-control" />
-                    </div>
-                    <div class="text-center">
+            </div>
+            <div class="text-center">
                         <button type="submit" class="btn btn-primary">Salvar</button>
                         <button type="reset" class="btn btn-secondary">Cancel</button>
-                    </div>
+            </div>
                 </EditForm>
             </div>
         </div>
@@ -71,7 +71,7 @@
         var produtos = await Http.GetFromJsonAsync<List<Product>>("/Product/List");
         produtosList.Clear();
         var produtosByCategory = produtos.Where(c => c.CategoriaId == Convert.ToInt32(value));
-        foreach (var item in produtosByCategory)
+        foreach (var item in produtosByCategory) //LINQ
         {
             produtosList.Add(item);
         }

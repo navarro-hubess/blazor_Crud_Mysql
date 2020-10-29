@@ -9,8 +9,8 @@ using blazor_mysql2.Server;
 namespace blazormysql2.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201024153818_initial")]
-    partial class initial
+    [Migration("20201027123246_inicial")]
+    partial class inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
